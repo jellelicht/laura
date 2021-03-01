@@ -1,0 +1,27 @@
+; SPDX-FileCopyrightText: 2019-2021 David Thompson <davet@gnu.org>
+; SPDX-FileCopyrightText: 2021 Jelle Licht <jlicht@posteo.net>
+;
+; SPDX-License-Identifier: GPL-3.0-or-later
+
+(define-module (laura config)
+  #:use-module (ice-9 match)
+  #:export (%laura-package-name
+            %laura-version
+            %laura-bug-report-address
+            %laura-home-page-url
+            %laura-git-browse-url))
+
+(define %laura-package-name
+  "@PACKAGE_NAME@")
+
+(define %laura-version
+  "@PACKAGE_VERSION@")
+
+(define %laura-bug-report-address
+  "@PACKAGE_BUGREPORT@")
+
+(define %laura-home-page-url
+  "@PACKAGE_URL@")
+
+(define %laura-git-browse-url
+  "https://github.com/jellelicht/laura.git")

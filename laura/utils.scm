@@ -1,3 +1,7 @@
+; SPDX-FileCopyrightText: 2021 Jelle Licht <jlicht@posteo.net>
+;
+; SPDX-License-Identifier: GPL-3.0-or-later
+
 (define-module (laura utils)
   #:use-module (guix build utils)
   #:use-module (guix records)

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# SPDX-FileCopyrightText: 2012,2014 Ludovic Courtès <ludo@gnu.org>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Create the build system.
+
+set -e -x
+exec autoreconf -vfi

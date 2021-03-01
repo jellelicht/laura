@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2021 Jelle Licht <jlicht@posteo.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+*.go
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+build-aux/
+config.log
+config.status
+configure
+pre-inst-env
+laura/config.scm
+guix/extensions/laura.scm
+test-suite.log
+tests/*.log
+tests/*.trs

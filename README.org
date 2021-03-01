@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Jelle Licht <jlicht@posteo.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 ~laura~ is a (poor) attempt at emulating the wonderful [[https://github.com/target/lorri][lorri]] tool, but
 for guix. Since guix is quite a bit different, ~laura~ does not have
 to deal with as many concerns as ~lorri~ does.

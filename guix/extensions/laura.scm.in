@@ -1,0 +1,65 @@
+; SPDX-FileCopyrightText: 2021 Ricardo Wurmus <rekado@elephly.net>
+; SPDX-FileCopyrightText: 2021 Jelle Licht <jlicht@posteo.net>
+;
+; SPDX-License-Identifier: GPL-3.0-or-later
+
+(define-module (guix extensions laura)
+  #:use-module (guix scripts)
+  #:export (guix-laura))
+
+;; IMPORTANT: We must avoid loading any modules from the GWL here,
+;; because we need to adjust the guile load paths first.  It's okay to
+;; import modules from core Guile and (guix scripts) though.
+
+(define (replace-load-paths!)
+  (let ((own-load-path
+         (if (getenv "LAURA_UNINSTALLED")
+             (list "@abs_top_srcdir@"
+                   "@abs_top_builddir@")
+             (list "@guilemoduledir@")))
+        (own-load-compiled-path
+         (if (getenv "LAURA_UNINSTALLED")
+             (list "@abs_top_srcdir@"
+                   "@abs_top_builddir@")
+             (list "@guileobjectdir@"))))
+    ;; Override load paths
+    (set! %load-path
+          (append own-load-path
+                  ;; This is Guile's own pristine load path.
+                  (list (%library-dir) (%site-dir)
+                        (%global-site-dir) (%package-data-dir))
+                  ;; When building in an impure environment this
+                  ;; variable may contain locations that collide with
+                  ;; Guile's own load path, so we put it at the very
+                  ;; end.  We add it for all the additional Guile
+                  ;; packages.
+                  (parse-path "@GUILE_LOAD_PATH@")))
+    (set! %load-compiled-path
+          (append own-load-compiled-path
+                  ;; This is Guile's own pristine load path for
+                  ;; compiled modules.
+                  (let ((ccache (%site-ccache-dir)))
+                    (list (string-append
+                           (string-drop-right ccache
+                                              (string-length "site-ccache"))
+                           "ccache")
+                          ccache))
+                  ;; When building in an impure environment this
+                  ;; variable may contain locations that collide with
+                  ;; Guile's own load path, so we put it at the very
+                  ;; end.  We add it for all the additional Guile
+                  ;; packages.
+                  (parse-path "@GUILE_LOAD_COMPILED_PATH@")))))
+
+;;;
+;;; Entry point.
+;;;
+
+(define-command (guix-laura . args)
+  (category development)
+  (synopsis "easily managed environment")
+
+  (replace-load-paths!)
+  (let ((main (module-ref (resolve-interface '(laura main))
+                          'guix-laura-main)))
+    (apply main args)))
